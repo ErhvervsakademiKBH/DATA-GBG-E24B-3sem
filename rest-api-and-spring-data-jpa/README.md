@@ -1,3 +1,3 @@
-# TEST
+# REST API & Spring Data JPA
 
-THIS IS A TEST
+Add info about the topics and prerequisites here!!!
