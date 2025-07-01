@@ -18,4 +18,6 @@
 
 ***
 
-* [TEST](test.md)
+* [REST API & Spring Data JPA](rest-api-and-spring-data-jpa/README.md)
+  * [RESTful API's](rest-api-and-spring-data-jpa/restful-apis.md)
+  * [Spring Data JPA](rest-api-and-spring-data-jpa/spring-data-jpa.md)
