@@ -250,6 +250,43 @@ Add the following test to the test class:
     }
 ```
 
+
+
+### Id generation in JPA
+
+In relational databases, it’s common to have the **primary key (`id`) auto-generated**. Spring Data JPA makes this easy with the `@GeneratedValue` annotation.
+
+Update your `Course` entity like this:
+
+{% code title="Course.java" %}
+```java
+import jakarta.persistence.*;
+
+@Entity
+public class Course {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    // Getters and setters...
+}
+
+```
+{% endcode %}
+
+This corresponds to the following SQL statement (notice the `AUTO_INCREMENT`):
+
+```sql
+CREATE TABLE course (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255)
+);
+```
+
+
+
 ## Adding a repository layer
 
 Spring Data JPA provides powerful abstractions for interacting with the database. This means developers can focus on writing business logic without having to write boilerplate code for data access (such as SQL queries, connection handling, and result mapping).
@@ -287,7 +324,6 @@ private CourseRepository courseRepository;
 public void whenSavingCourse_thenItShouldBeFoundById() {
     // Arrange
     Course course = new Course();
-    course.setId(1L);
     course.setName("Spring Data JPA");
 
     // Act
@@ -345,3 +381,87 @@ public class CourseController {
 }
 ```
 
+
+
+## Initializing the database with data&#x20;
+
+It’s often useful to preload the database with some sample data. We will show two common approaches:
+
+1. **Using a `data.sql` file**
+2. **Using a custom `InitData` class**
+
+### Using a `data.sql` file
+
+Start by creating a `data.sql` in the `src/main/resources` folder, and add the following insert statements:
+
+{% code title="data.sql" %}
+```sql
+INSERT INTO course (name) VALUES 
+('Programmering 2'),
+('Teknologi 2'),
+('Systemudvikling 2');
+```
+{% endcode %}
+
+In order for Spring Data JPA to initialize the database with the data, we need to configure it in `application.properties` file:
+
+{% code title="application.properties" %}
+```properties
+# H2 in-memory database configuration
+#spring.datasource.url=jdbc:h2:mem:testdb
+#spring.datasource.driverClassName=org.h2.Driver
+#spring.datasource.username=sa
+#spring.datasource.password=
+#spring.h2.console.enabled=true
+#spring.h2.console.path=/h2-console
+
+# MySQL configuration
+spring.datasource.url=jdbc:mysql://localhost:3306/jpatest
+spring.datasource.username= #Enter your username
+spring.datasource.password= #Enter your password
+
+sring.jpa.hibernate.ddl-auto=create
+spring.jpa.defer-datasource-initialization=true
+spring.sql.init.mode=always
+```
+{% endcode %}
+
+#### Verify the data
+
+TODO
+
+
+
+### Using an InitData class
+
+Spring Boot offers an interface `CommandLineRunner` that allows you to run custom code after the application has fully started — right after the Spring context is loaded.
+
+The interface only has one method, that we need to implement - `run()`:
+
+{% code title="InitData.java" %}
+```java
+@Configuration
+public class InitData implements CommandLineRunner {
+
+    private final CourseRepository courseRepository;
+
+    public InitData(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        Course course1 = new Course();
+        course1.setName("Programmering 2");
+        Course course2 = new Course();
+        course2.setName("Teknologi 2");
+        Course course3 = new Course();
+        course3.setName("Systemudvikling 2");
+
+        courseRepository.saveAll(List.of(course1, course2, course3));
+    }
+}
+```
+{% endcode %}
+
+By using `@Configuration` we make sure that it is a spring managed bean - ie. Spring is automatically creating an instance of the InitData class. Since `InitData` implements `CommandLineRunner,` Spring detects this, and will automatically call the `run()` method once the application is fully initialized.
