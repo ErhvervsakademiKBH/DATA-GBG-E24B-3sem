@@ -178,4 +178,170 @@ If the test still fails, make sure that your username and password are correct!
 
 
 
-## Creating a database
+## Managing domain objects with Spring Data JPA <a href="#heading_id_11" id="heading_id_11"></a>
+
+We will explore how to manage business domain objects in a relational database with Spring Data JPA:
+
+Start by creating a POJO (Plain Old Java Object):
+
+{% code title="Course.java" %}
+```java
+public class Course {
+    private Long id;
+    private String name;
+}
+```
+{% endcode %}
+
+We want this class to correspond to the following sql table:
+
+```sql
+CREATE TABLE course (
+    id BIGINT PRIMARY KEY,
+    name VARCHAR(255)
+);
+```
+
+To map the `Course` class to this SQL table using Spring Data JPA, we annotate it with JPA annotations and mark it as an entity:
+
+<pre class="language-java" data-title="Course.java"><code class="lang-java"><strong>@Entity
+</strong><strong>public class Course {
+</strong><strong>    @Id
+</strong>    private Long id;
+    private String name;
+    
+    // Getters &#x26; Setters is omitted here
+}
+</code></pre>
+
+#### What This Does
+
+* `@Entity`: Tells JPA that this class represents a table in the database.
+* `@Id`: Marks `id` as the primary key of the table.
+* JPA automatically maps the fields `id` and `name` to corresponding columns.
+
+To allow Hibernate (the JPA provider) to create the necessary database tables at application startup, add the following line to your `application.properties` file:
+
+{% code title="application.properties" %}
+```properties
+spring.jpa.hibernate.ddl-auto=create
+```
+{% endcode %}
+
+#### Run the application
+
+By running the application, JPA/Hibernate will:
+
+* Connect to  database.
+* Generate the corresponding table ( `course`) based on your entity class.
+
+#### Verify that the table is created
+
+Add the following test to the test class:
+
+```java
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Test
+    public void whenCheckingCoursesTable_thenItExists() {
+        Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM course", Integer.class);
+        assertThat(count).isNotNull(); // No exception = table exists
+    }
+```
+
+## Adding a repository layer
+
+Spring Data JPA provides powerful abstractions for interacting with the database. This means developers can focus on writing business logic without having to write boilerplate code for data access (such as SQL queries, connection handling, and result mapping).
+
+To retrieve data using Spring Data JPA, you typically create a **repository interface** that extends one of Spring Data's base interfaces.
+
+{% code title="CourseRepository.java" %}
+```java
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CourseRepository extends JpaRepository<Course, Long> {
+}
+
+```
+{% endcode %}
+
+And thats everything we need to access the database. Spring will automatically generate the implementation for this interface at runtime. It provides a full set of CRUD operations out of the box:
+
+* `save()`
+* `findById()`
+* `findAll()`
+* `deleteById()`
+
+You don’t have to write any SQL or implementation code — just define the interface, and Spring Data JPA handles the rest.
+
+#### Testing save functionality
+
+Add the following test to the test class:
+
+```java
+@Autowired
+private CourseRepository courseRepository;
+
+@Test
+public void whenSavingCourse_thenItShouldBeFoundById() {
+    // Arrange
+    Course course = new Course();
+    course.setId(1L);
+    course.setName("Spring Data JPA");
+
+    // Act
+    courseRepository.save(course);
+    Optional<Course> retrieved = courseRepository.findById(1L);
+
+    // Assert
+    assertThat(retrieved).isPresent();
+    assertThat(retrieved.get().getName()).isEqualTo("Spring Data JPA");
+}
+```
+
+
+
+### Communicating with the repository layer
+
+Typically you do not communicate directly with the repository layer. There should be a service layer that acts as a bridge between the controller layer and repository layer
+
+{% code title="CourseService.java" %}
+```java
+@Service
+public class CourseService {
+    private final CourseRepository courseRepository;
+    
+    public CourseService(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
+    
+    public List<Course> findAll() {
+        return courseRepository.findAll();
+    }
+
+}
+```
+{% endcode %}
+
+TODO!!!
+
+The controller layer handles outside communication to the application, for our purpose we create a RESTful endpoint:
+
+```java
+@RestController
+@RequestMapping("/api/courses")
+public class CourseController {
+    private final CourseService courseService;
+    
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
+    }
+    
+    @GetMapping
+    public ResponseEntity<List<Course>> getAllCourses() {
+        return ResponseEntity.ok(courseService.findAll());
+    }
+}
+```
+
