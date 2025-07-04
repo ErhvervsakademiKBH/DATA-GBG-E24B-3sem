@@ -204,15 +204,18 @@ CREATE TABLE course (
 
 To map the `Course` class to this SQL table using Spring Data JPA, we annotate it with JPA annotations and mark it as an entity:
 
-<pre class="language-java" data-title="Course.java"><code class="lang-java"><strong>@Entity
-</strong><strong>public class Course {
-</strong><strong>    @Id
-</strong>    private Long id;
+{% code title="Course.java" %}
+```java
+@Entity
+public class Course {
+    @Id
+    private Long id;
     private String name;
     
-    // Getters &#x26; Setters is omitted here
+    // Getters & Setters is omitted here
 }
-</code></pre>
+```
+{% endcode %}
 
 #### What This Does
 
@@ -420,15 +423,15 @@ spring.datasource.url=jdbc:mysql://localhost:3306/jpatest
 spring.datasource.username= #Enter your username
 spring.datasource.password= #Enter your password
 
-sring.jpa.hibernate.ddl-auto=create
+spring.jpa.hibernate.ddl-auto=create
 spring.jpa.defer-datasource-initialization=true
 spring.sql.init.mode=always
 ```
 {% endcode %}
 
-#### Verify the data
+#### Verify the data initialization
 
-TODO
+TODO: Write a test for
 
 
 
@@ -465,3 +468,16 @@ public class InitData implements CommandLineRunner {
 {% endcode %}
 
 By using `@Configuration` we make sure that it is a spring managed bean - ie. Spring is automatically creating an instance of the InitData class. Since `InitData` implements `CommandLineRunner,` Spring detects this, and will automatically call the `run()` method once the application is fully initialized.
+
+#### Verify that the courses are created&#x20;
+
+TODO: WRITE TEST FOR THIS
+
+
+
+## Testing the course API
+
+The controller at this point exposes one endpoint: **GET** **`http://localhost:8080/api/courses`**. Run the Application and verify that the endpoint is available:
+
+<figure><img src="../../.gitbook/assets/image.png" alt="" width="375"><figcaption></figcaption></figure>
+
