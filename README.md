@@ -4,11 +4,13 @@ cover: https://gitbookio.github.io/onboarding-template-images/header.png
 coverY: 0
 ---
 
-# Welcome
+# Velkomst
 
-Welcome to the GitBook Starter Template! Here you'll get an overview of all the amazing features GitBook offers to help you build beautiful, interactive documentation.
 
-You'll see some of the best parts of GitBook in action — and find help on how you can turn this template into your own.
+
+## Semesterplan: PROG 2
+
+<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 ### Jump right in
 
