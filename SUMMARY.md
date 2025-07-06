@@ -22,3 +22,7 @@
   * [RESTful API's](rest-api-and-spring-data-jpa/restful-apis.md)
   * [Spring Data JPA](rest-api-and-spring-data-jpa/spring-data-jpa/README.md)
     * [Exercises](rest-api-and-spring-data-jpa/spring-data-jpa/exercises.md)
+
+## Extra
+
+* [Annotations](extra/annotations.md)
