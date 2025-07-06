@@ -16,12 +16,12 @@
 * [OpenAPI](basics/openapi.md)
 * [Integrations](basics/integrations.md)
 
-***
+## PROGRAMMEING
 
-* [REST API & Spring Data JPA](rest-api-and-spring-data-jpa/README.md)
-  * [RESTful API's](rest-api-and-spring-data-jpa/restful-apis.md)
-  * [Spring Data JPA](rest-api-and-spring-data-jpa/spring-data-jpa/README.md)
-    * [Exercises](rest-api-and-spring-data-jpa/spring-data-jpa/exercises.md)
+* [REST API & Spring Data JPA](programmeing/rest-api-and-spring-data-jpa/README.md)
+  * [RESTful API's](programmeing/rest-api-and-spring-data-jpa/restful-apis.md)
+  * [Spring Data JPA](programmeing/rest-api-and-spring-data-jpa/spring-data-jpa/README.md)
+    * [Exercises](programmeing/rest-api-and-spring-data-jpa/spring-data-jpa/exercises.md)
 
 ## Extra
 

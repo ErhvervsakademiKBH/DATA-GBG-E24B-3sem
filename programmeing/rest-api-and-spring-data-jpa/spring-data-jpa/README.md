@@ -479,5 +479,5 @@ TODO: WRITE TEST FOR THIS
 
 The controller at this point exposes one endpoint: **GET** **`http://localhost:8080/api/courses`**. Run the Application and verify that the endpoint is available:
 
-<figure><img src="../../.gitbook/assets/image.png" alt="" width="375"><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image.png" alt="" width="375"><figcaption></figcaption></figure>
 
