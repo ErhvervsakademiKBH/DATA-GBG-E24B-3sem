@@ -22,6 +22,11 @@
   * [RESTful API's](programmeing/rest-api-and-spring-data-jpa/restful-apis.md)
   * [Spring Data JPA](programmeing/rest-api-and-spring-data-jpa/spring-data-jpa/README.md)
     * [Exercises](programmeing/rest-api-and-spring-data-jpa/spring-data-jpa/exercises.md)
+* [Full stack with JavaScript](programmeing/full-stack-with-javascript/README.md)
+  * [Page 1](programmeing/full-stack-with-javascript/page-1.md)
+* [Functional Programming](programmeing/functional-programming/README.md)
+  * [Page 2](programmeing/functional-programming/page-2.md)
+* [Spring Security & WebClient](programmeing/spring-security-and-webclient.md)
 
 ## Extra
 
