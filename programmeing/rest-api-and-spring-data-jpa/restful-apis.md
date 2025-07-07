@@ -203,3 +203,93 @@ public class UserController {
 </code></pre>
 
 Instead of always returning a `200 OK` response — even when a user isn't found — the controller now correctly returns a **`404 Not Found`** when the requested ID doesn’t exist.
+
+### Adding full CRUD
+
+We want to support all CRUD operations done to the User resource, in other words we want to have the following endpoints:
+
+* **GET** `http://localhost:8080/api/users` → _Get all users_
+* **GET** `http://localhost:8080/api/users/{id}` → _Get a specific user_
+* **POST** `http://localhost:8080/api/users` → _Create a user_
+* **PUT** `http://localhost:8080/api/users/{id}` → _Update an existing user_
+* **DELETE** `http://localhost:8080/api/users/{id}` → _Delete a user_
+
+{% hint style="info" %}
+Notice that we **never write URLs like** <mark style="color:red;">`/api/users/create`</mark> or <mark style="color:red;">`/api/users/delete`</mark> in REST APIs.
+
+That’s because in REST, the **HTTP method** (like `POST`, `GET`, `PUT`, or `DELETE`) already describes the action being taken. <mark style="color:green;">**The URL should only describe the resource, not the operation.**</mark>
+{% endhint %}
+
+To mark a method as a handler for a specific HTTP method in Spring Boot, we use method-level annotations like:
+
+* `@GetMapping` for GET requests
+* `@PostMapping` for POST requests
+* `@PutMapping` for PUT requests
+* `@DeleteMapping` for DELETE requests
+
+Each of these corresponds to one of the CRUD operations.
+
+Below is an updated version of the `UserController` class with **full CRUD support** using an in-memory list:
+
+<pre class="language-java"><code class="lang-java">@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    private List&#x3C;User> users = new ArrayList&#x3C;>(List.of(
+        new User(1L, "Osman", "osnb@kea.dk"),
+        new User(2L, "User 2", "user2@kea.dk"),
+        new User(3L, "User 3", "user3@kea.dk")
+    ));
+
+    @GetMapping
+    public ResponseEntity&#x3C;List&#x3C;User>> getAllUsers() {
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity&#x3C;User> getUserById(@PathVariable Long id) {
+        for (User user : users) {
+            if (user.getId().equals(id)) {
+                return ResponseEntity.ok(user);
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+<strong>    @PostMapping
+</strong><strong>    public ResponseEntity&#x3C;User> createUser(@RequestBody User newUser) {
+</strong><strong>        users.add(newUser);
+</strong><strong>        return ResponseEntity.ok(newUser);
+</strong><strong>    }
+</strong>
+<strong>    @PutMapping("/{id}")
+</strong><strong>    public ResponseEntity&#x3C;User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+</strong><strong>        for (User user : users) {
+</strong><strong>            if (user.getId().equals(id)) {
+</strong><strong>                user.setName(updatedUser.getName());
+</strong><strong>                user.setEmail(updatedUser.getEmail());
+</strong><strong>                return ResponseEntity.ok(user);
+</strong><strong>            }
+</strong><strong>        }
+</strong><strong>        return ResponseEntity.notFound().build();
+</strong><strong>    }
+</strong>
+<strong>    @DeleteMapping("/{id}")
+</strong><strong>    public ResponseEntity&#x3C;Void> deleteUser(@PathVariable Long id) {
+</strong><strong>        for (int i = 0; i &#x3C; users.size(); i++) {
+</strong><strong>            if (users.get(i).getId().equals(id)) {
+</strong><strong>                users.remove(i);
+</strong><strong>                return ResponseEntity.noContent().build();
+</strong><strong>            }
+</strong><strong>        }
+</strong><strong>        return ResponseEntity.notFound().build();
+</strong><strong>    }
+</strong>}
+
+</code></pre>
+
+This gives a full CRUD for the user resource.
+
+#### Testing the API in PostMan
+
+TODO
