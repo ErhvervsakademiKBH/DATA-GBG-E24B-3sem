@@ -123,3 +123,12 @@ In a REST API, JSON is typically used in:
 * **Request bodies** (e.g. when creating or updating data)
 * **Response bodies** (e.g. when retrieving data)
 
+
+
+## REST and RESTful APIs
+
+**REST** stands for **Representational State Transfer**. It is an **architectural style** for designing networked applications, especially web services. When an API is built following the principles of REST, it's called a **RESTful API**.
+
+> _**"The ideas in REST aim to be simple and to decouple the API from the underlying services that serve the API. It uses a request-response model and is stateless, as all the information necessary to do something is contained within the request."**&#x20;_&#x20;(Ponelat & Rosenstock, _Designing APIs with Swagger and OpenAPI_, 2022).
+
+For the full
