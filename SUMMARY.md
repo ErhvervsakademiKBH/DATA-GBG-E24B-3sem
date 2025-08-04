@@ -25,7 +25,7 @@
     * [Exercises](programmeing/rest-api-and-spring-data-jpa/spring-data-jpa-intro/exercises.md)
   * [Entity Relationships in JPA](programmeing/rest-api-and-spring-data-jpa/entity-relationships-in-jpa.md)
 * [Full stack with JavaScript](programmeing/full-stack-with-javascript/README.md)
-  * [Page 1](programmeing/full-stack-with-javascript/page-1.md)
+  * [JavaScript intro](programmeing/full-stack-with-javascript/javascript-intro.md)
 * [Functional Programming](programmeing/functional-programming/README.md)
   * [Page 2](programmeing/functional-programming/page-2.md)
 * [Spring Security & WebClient](programmeing/spring-security-and-webclient.md)
