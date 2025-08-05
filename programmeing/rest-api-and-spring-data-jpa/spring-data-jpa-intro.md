@@ -2,9 +2,13 @@
 
 ## Objectives
 
-* WRITE SOMETHING HERE
+By the end of this module the student would be able to:
 
-
+* Set up Spring Data JPA with H2 and MySQL
+* Configure entities, repositories, and services
+* Use Spring Boot to persist and retrieve data via RESTful endpoints
+* Test database interactions and API endpoints
+* Initialize databases with sample data using SQL files and programmatic methods
 
 Literature used:
 
@@ -166,17 +170,19 @@ In our application.properties file replace the content, with the following:&#x20
 
 # MySQL configuration
 spring.datasource.url=jdbc:mysql://localhost:3306/jpatest
-spring.datasource.username= #Enter your username
-spring.datasource.password= #Enter your password
+spring.datasource.username=#Enter your username
+spring.datasource.password=#Enter your password
 ```
+
+{% hint style="warning" %}
+Comment out the H2 database configuration.
+{% endhint %}
 
 #### Verify the database connection
 
 Run the same test as before. The test should fail, and the reason is that it still expects the `dbName` to be `H2` - fix it by replacing it with `MySQL`.
 
 If the test still fails, make sure that your username and password are correct!
-
-
 
 ## Managing domain objects with Spring Data JPA <a href="#heading_id_11" id="heading_id_11"></a>
 
@@ -217,10 +223,10 @@ public class Course {
 ```
 {% endcode %}
 
-#### What This Does
+What This Does
 
 * `@Entity`: Tells JPA that this class represents a table in the database.
-* `@Id`: Marks `id` as the primary key of the table.
+* `@Id`: Marks `id` as the primary key of the table. **This is neccesary!**
 * JPA automatically maps the fields `id` and `name` to corresponding columns.
 
 To allow Hibernate (the JPA provider) to create the necessary database tables at application startup, add the following line to your `application.properties` file:
@@ -264,7 +270,7 @@ Add the following test to the test class:
     }
 ```
 
-
+Run the test class!
 
 ### Id generation in JPA
 
@@ -353,8 +359,6 @@ public void whenSavingCourse_thenItShouldBeFoundById() {
     assertThat(retrieved.get().getName()).isEqualTo("Spring Data JPA");
 }
 ```
-
-
 
 ### Communicating with the repository layer
 
@@ -449,7 +453,7 @@ spring.sql.init.mode=always
 
 #### Verify the data initialization
 
-TODO: Write a test for
+TODO: Write a test
 
 
 
@@ -497,9 +501,9 @@ TODO: WRITE TEST FOR THIS
 
 The controller at this point exposes one endpoint: **GET** **`http://localhost:8080/api/courses`**. Run the Application and verify that the endpoint is available:
 
-<figure><img src="../../../.gitbook/assets/image.png" alt="" width="375"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image.png" alt="" width="375"><figcaption></figcaption></figure>
 
-
+Test the endpoints using Postman.
 
 ***
 
@@ -546,6 +550,12 @@ The controller at this point exposes one endpoint: **GET** **`http://localhost:8
 2. `update`
 3. `none`
 4. `create-drop`
+
+**7.** What happens if we omit a getter (eg. `getName()`) for an entity field when calling a REST endpoin&#x74;**?**
+
+1. The field will still be included in the JSON response
+2. The field will be excluded from the JSON response
+3. The application will throw an error
 
 ***
 
@@ -600,6 +610,4 @@ private String shortName;
 Generate some dummy data using `InitData` approach as above.
 
 Make sure to test all endpoints in **Postman**.
-
-
 
