@@ -1,4 +1,4 @@
-# Spring Data JPA
+# Spring Data JPA Intro
 
 ## Objectives
 
@@ -231,6 +231,17 @@ spring.jpa.hibernate.ddl-auto=create
 ```
 {% endcode %}
 
+{% hint style="info" %}
+`ddl-auto` strategies:
+
+There exist different `ddl-auto` strategies that impact how the database schema is managed by Spring Data  JPA at runtime:
+
+* **`update`**:  Updates the schema to match the entity definitions without removing existing data.
+* **`create`**: Drops existing tables, recreates them based on current mappings.
+* **`create-drop`:** Creates the schema at startup, drops it on shutdown.
+* **`none`**: No changes to the schema.&#x20;
+{% endhint %}
+
 #### Run the application
 
 By running the application, JPA/Hibernate will:
@@ -279,6 +290,10 @@ public class Course {
 ```
 {% endcode %}
 
+{% hint style="info" %}
+There exists different `GenerationType`'s for `@GeneratedValue` see [https://www.baeldung.com/hibernate-identifiers#generated-identifiers](https://www.baeldung.com/hibernate-identifiers#generated-identifiers)
+{% endhint %}
+
 This corresponds to the following SQL statement (notice the `AUTO_INCREMENT`):
 
 ```sql
@@ -313,7 +328,7 @@ And thats everything we need to access the database. Spring will automatically g
 * `findAll()`
 * `deleteById()`
 
-You don’t have to write any SQL or implementation code — just define the interface, and Spring Data JPA handles the rest.
+You don’t have to write any SQL or implementation code — just define the interface (as above), and Spring Data JPA provides an implementation automatically.
 
 #### Testing save functionality
 
@@ -358,7 +373,8 @@ public class CourseService {
     public List<Course> findAll() {
         return courseRepository.findAll();
     }
-
+    
+    // Other CRUD methods...
 }
 ```
 {% endcode %}
@@ -381,6 +397,8 @@ public class CourseController {
     public ResponseEntity<List<Course>> getAllCourses() {
         return ResponseEntity.ok(courseService.findAll());
     }
+    
+    // Other CRUD methods...
 }
 ```
 
@@ -480,4 +498,44 @@ TODO: WRITE TEST FOR THIS
 The controller at this point exposes one endpoint: **GET** **`http://localhost:8080/api/courses`**. Run the Application and verify that the endpoint is available:
 
 <figure><img src="../../../.gitbook/assets/image.png" alt="" width="375"><figcaption></figcaption></figure>
+
+## Validation annotations
+
+
+
+## Exercises:
+
+### 1. Add full CRUD for `Course`
+
+#### 1.1: Expand functionality of the Course project, to include the following endpoints:
+
+* **GET** `api/courses`&#x20;
+* **GET** `api/courses/{id}`
+* **POST** `api/courses`
+* **PUT** `api/courses/{id}`
+* **DELETE** `api/courses/{id}`
+
+Make sure to test all endpoints in **Postman**.
+
+#### 1.2: Validation annotations
+
+Add the following new fields to the `Course` entity with validation:
+
+* `String shortName` (like **PROG2** or **TEK2**) - between 3 to 7 characters.
+* `String description`
+* `int ects` - the value should be positive.
+
+**Hint:** see validation annotations here: [https://www.baeldung.com/java-validation#validation](https://www.baeldung.com/java-validation#validation)
+
+```java
+// Example using validation annotations
+@Size(min = 3, max = 7, message = "Must be between 3 to 7 characters")
+private String shortName;
+```
+
+
+
+### 2. Add a new entity: `Student`
+
+Add a new entity
 
