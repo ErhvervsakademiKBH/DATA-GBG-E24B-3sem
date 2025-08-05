@@ -499,13 +499,59 @@ The controller at this point exposes one endpoint: **GET** **`http://localhost:8
 
 <figure><img src="../../../.gitbook/assets/image.png" alt="" width="375"><figcaption></figcaption></figure>
 
-## Validation annotations
 
 
+***
+
+## Peer instructions:
+
+**1. What does the `@Entity` annotation do?**
+
+1. Marks a class as a Spring bean
+2. Maps the class to a database table
+3. Ensures the class has an ID field
+4. Registers the class with the repository
+
+**2. Which of these fields must be present in every JPA entity?**
+
+1. A field with `@Column`
+2. &#x20;A field with `@GeneratedValue`
+3. A field with `@Id`
+4. A field named `id`
+
+**3. What does `@GeneratedValue(strategy = GenerationType.IDENTITY)` do?**
+
+1. Manually assigns a value to the ID field
+2. Uses a UUID generator
+3. Lets the database auto-generate the primary key (e.g., auto-increment)
+4. Requires the developer to provide the ID
+
+**4. What happens when you call `.save()` on a Spring Data JPA repository?**
+
+1. It updates the database schema
+2. It persists a new entity or updates an existing one based on the ID
+3. It always inserts a new record
+4. It deletes the entity if it already exists
+
+**5. What does `spring.jpa.hibernate.ddl-auto=update` do?**
+
+1. Drops and recreates all tables every time
+2. Does nothing — no schema changes
+3. Updates the DB schema based on entities without removing existing data
+4. Only validates the schema without changes
+
+**6. Which `ddl-auto` setting should you avoid in production?**
+
+1. `validate`
+2. `update`
+3. `none`
+4. `create-drop`
+
+***
 
 ## Exercises:
 
-### 1. Add full CRUD for `Course`
+### 1. Create a full CRUD REST API for `Course`
 
 #### 1.1: Expand functionality of the Course project, to include the following endpoints:
 
@@ -514,6 +560,8 @@ The controller at this point exposes one endpoint: **GET** **`http://localhost:8
 * **POST** `api/courses`
 * **PUT** `api/courses/{id}`
 * **DELETE** `api/courses/{id}`
+
+Generate some dummy data using `InitData` approach as above.
 
 Make sure to test all endpoints in **Postman**.
 
@@ -533,9 +581,25 @@ Add the following new fields to the `Course` entity with validation:
 private String shortName;
 ```
 
-
-
 ### 2. Add a new entity: `Student`
 
-Add a new entity
+#### 2.1:  Add a new entity `Student` with the following attributes:
+
+* fullName
+* email - Make sure it is a valid email (use validation annotation)
+* dateOfBirth - Make sure that the date is in the past (use validation annotation)
+
+#### 2.2:  Create a full CRUD for the `Student` entity
+
+* **GET** `api/students`&#x20;
+* **GET** `api/students/{id}`
+* **POST** `api/students`
+* **PUT** `api/students/{id}`
+* **DELETE** `api/students/{id}`
+
+Generate some dummy data using `InitData` approach as above.
+
+Make sure to test all endpoints in **Postman**.
+
+
 
