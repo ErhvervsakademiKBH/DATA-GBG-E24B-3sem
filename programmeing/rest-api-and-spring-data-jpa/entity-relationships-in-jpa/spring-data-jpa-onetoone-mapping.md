@@ -80,3 +80,56 @@ public class ProfilePhoto {
 ```
 {% endcode %}
 
+This corresponds to the SQL tables above.
+
+### Repository
+
+To access the database, we now need to create two repositories:
+
+{% code title="StudentRepository.java" %}
+```java
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface StudentRepository extends JpaRepository<Student, Long> {
+}
+```
+{% endcode %}
+
+{% code title="ProfilePhotoRepository.java" %}
+```java
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProfilePhotoRepository extends JpaRepository<ProfilePhoto, Long> {
+}
+```
+{% endcode %}
+
+This is everything we need to access the tables.
+
+### Testing the relationship
+
+### RestController
+
+By omitting the Service layer for simplicity, and only create a REST controller for the `Student`:
+
+{% code title="StudentController.java" %}
+```java
+@RestController
+@RequestMapping("/api/students")
+public class StudentController {
+    private final StudentRepository studentRepository;
+    
+    public StudentController(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
+    
+    @GetMapping
+    public ResponseEntity<List<Student>> getStudents() {
+        return ResponseEntity.ok(studentRepository.findAll());
+    }
+    
+    // Other CRUD methods...
+}
+```
+{% endcode %}
+
