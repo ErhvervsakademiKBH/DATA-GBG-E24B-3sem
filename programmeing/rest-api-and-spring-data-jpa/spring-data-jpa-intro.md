@@ -577,27 +577,19 @@ Make sure to test all endpoints in **Postman**.
 
 #### 1.2: Validation annotations
 
-Add the following new fields to the `Course` entity with validation:
+Add the following new fields to the `Course` entity:
 
-* `String shortName` (like **PROG2** or **TEK2**) - between 3 to 7 characters.
+* `String shortName` (like **PROG2** or **TEK2**)&#x20;
 * `String description`
-* `int ects` - the value should be positive.
-
-**Hint:** see validation annotations here: [https://www.baeldung.com/java-validation#validation](https://www.baeldung.com/java-validation#validation)
-
-```java
-// Example using validation annotations
-@Size(min = 3, max = 7, message = "Must be between 3 to 7 characters")
-private String shortName;
-```
+* `int ects`&#x20;
 
 ### 2. Add a new entity: `Student`
 
 #### 2.1:  Add a new entity `Student` with the following attributes:
 
-* fullName
-* email - Make sure it is a valid email (use validation annotation)
-* dateOfBirth - Make sure that the date is in the past (use validation annotation)
+* `String fullName`
+* `String email`
+* `LocalDate dateOfBirth`
 
 #### 2.2:  Create a full CRUD for the `Student` entity
 
